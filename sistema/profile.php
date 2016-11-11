@@ -149,10 +149,11 @@ Class T  extends Solicitudamistad
 
 public static function mostrarfotoamigo($user)
 {
-	$consultaft = " SELECT fotoperfil FROM usuarios WHERE id_usuario = ".$user." ";
-	$queryft = mysql_query($consultaft);
+	global $conexion;
 
-		$arrayft = mysql_fetch_object($queryft);
+	$consultaft = " SELECT fotoperfil FROM usuarios WHERE id_usuario = ".$user." ";
+	$queryft = $conexion->query($consultaft);
+		 $arrayft = $queryft->fetch(PDO::FETCH_LAZY);
 	  	 	
 			if( !empty($arrayft->fotoperfil) )
 			{
@@ -173,15 +174,14 @@ public static function mostrarfotoamigo($user)
 
 public static function mostrarfotousrsession($user)
 {
-	
+	global $conexion;
 	
 	$consultaft = " SELECT fotoperfil 
 	                FROM usuarios 
 	                WHERE id_usuario = ".$user." ";
 	
-	$queryft = mysql_query($consultaft);
-
-		 $arrayft = mysql_fetch_object($queryft);
+	$queryft = $conexion->query($consultaft);
+		 $arrayft = $queryft->fetch(PDO::FETCH_LAZY);
 	  	 
 	  	 if( !empty($arrayft->fotoperfil) )
 		 {
@@ -216,8 +216,10 @@ public static function mostrarfotosexos ($user)
 	            FROM usuarios us 
 	            INNER JOIN fsexos fsx ON fsx.sexo = us.sexo 
 	            WHERE id_usuario  = ".$user." ";
-	$querysexo = mysql_query($consexo);
-	$arraysexo = mysql_fetch_object($querysexo);
+
+	$querysexo = $conexion->query($consexo);
+		 $arraysexo = $querysexo->fetch(PDO::FETCH_LAZY);
+	  	 
 	
 	//$sex = $arraysexo->sexo;
 	$fotosexo = $arraysexo->fotosex;
@@ -250,7 +252,7 @@ public static function mostrarfotosexos ($user)
 public function comun($user,$data)
 {
 	
-	global $session;
+	global $session, $conexion;
 	?>           
 	          <div id="continfo" >
 	       
@@ -295,15 +297,15 @@ public function comun($user,$data)
                 
                 $consulta .= " ORDER BY id ASC LIMIT ".$inicio." , ".$registros." ";
   
-                $queryk = mysql_query($consulta) or die ("error en la consulta listar amigos # 1");
+                $queryk = $conexion->query($consulta) or die ("error en la consulta listar amigos # 1");
    
   
   
           $contar = "SELECT * 
                      FROM amigos 
                       ";
-          $contarok = mysql_query($contar);
-          $total_registros = mysql_num_rows($contarok);
+          $contarok = $conexion->query($contar);
+          $total_registros = $contarok->rowCount();
           $total_paginas = ($total_registros / $registros);
   
 
@@ -362,9 +364,9 @@ public function comun($user,$data)
               }
         }
 
-
+	
  
-	while($arraycont = mysql_fetch_object($queryk))
+	while($arraycont = $queryk->fetch(PDO::FETCH_LAZY))
     {
     	$amiguitos = $arraycont->amigos;
     	$idamiguitos = $arraycont->id_usuario;
@@ -414,9 +416,9 @@ public function comun($user,$data)
 	                           FROM amigos
 	                           WHERE usuario = '".$session."'  AND amigos = '".$amiguitos."' ";
 	        
-	        $queryamigo = mysql_query($consultaamigo);
+	        $queryamigo = $conexion->query($consultaamigo);
 	        
-	        $rowamigo = mysql_num_rows($queryamigo);
+	        $rowamigo = $queryamigo->rowCount();
 	        
 			if($rowamigo > 0 ) 
 			{
@@ -426,8 +428,8 @@ public function comun($user,$data)
 			                               FROM amigoscomunes
 			                               WHERE usuario = '".$session."' AND amigo = '".$user."' AND amigoencomun = '".$amiguitos."' ";
 			    
-		 	  $queryexistenciacomun = mysql_query($consultaexistenciacomun);  	
-			  $rowexistenciacomun = mysql_num_rows($queryexistenciacomun);
+		 	  $queryexistenciacomun = $conexion->query($consultaexistenciacomun);  	
+			  $rowexistenciacomun = $queryexistenciacomun->rowCount();
 			  if($rowexistenciacomun > 0 )
 			  {
 			  	 
@@ -438,12 +440,12 @@ public function comun($user,$data)
 			  	                                 VALUE('".$session."', '".$user."', '".$amiguitos."' ) ";
 			                      
 				      
-				    $queryinsertcomun = mysql_query($insertamigocomun);
+				    $queryinsertcomun = $conexion->query($insertamigocomun);
 				    
 				        $insertamigocomundos = " INSERT INTO amigoscomunes(usuario, amigo, amigoencomun ) 
 			  	                                 VALUE('".$user."', '".$session."', '".$amiguitos."' ) ";
 			  
-			            $queryinsertcomundos = mysql_query($insertamigocomundos);
+			            $queryinsertcomundos = $conexion->query($insertamigocomundos);
 			  }
 			  	
 					
@@ -476,15 +478,16 @@ public function comun($user,$data)
 	                   FROM amigos
 	                   WHERE usuario = '".$idamiguitos."' ";
 	
-	             $queryconteoamigos = mysql_query($consultaconteo);
+	             $queryconteoamigos = $conexion->query($consultaconteo);
   
-                 $rowconteo = mysql_num_rows($queryconteoamigos);
+                 $rowconteo = $queryconteoamigos->rowCount();
 	
 	             if($rowconteo > 0 ) 
              	{
-		
+		           
+	
 		  
-		          while ($filasconteoamigos = mysql_fetch_assoc ($queryconteoamigos))
+		          while ($filasconteoamigos = $queryconteoamigos->fetch(PDO::FETCH_LAZY))
 		           {
 		
 		
@@ -506,8 +509,8 @@ public function comun($user,$data)
 	                              FROM amigos
 	                              WHERE usuario = '".$amiguitos."' ";
 	
-	                                  $querycontdos = mysql_query($contdos);
-	                                       while($arraycontdos = mysql_fetch_array($querycontdos))
+	                                  $querycontdos = $conexion->query($contdos);
+	                                       while($arraycontdos = $querycontdos->fetch(PDO::FETCH_LAZY))
                                            {
     	                                      $amiguitosdos = $arraycontdos['amigos'];
     	                                              
@@ -517,9 +520,9 @@ public function comun($user,$data)
 	                                                                       FROM amigos
 	                                                                        WHERE usuario = '".$session."'  AND amigos = '".$amiguitosdos."' ";
 	        
-	                                                           $queryamigodos = mysql_query($consultaamigodos);
+	                                                           $queryamigodos = $conexion->query($consultaamigodos);
 	        
-	                                                           $rowamigodos = mysql_num_rows($queryamigodos);
+	                                                           $rowamigodos = $queryamigodos->rowCount();
 	        
 			                                                  if($rowamigodos > 0 )
 			                                                  {
@@ -528,21 +531,21 @@ public function comun($user,$data)
 			                                                                                        WHERE usuario = '".$session."' AND amigo = '".$amiguitos."' 
 			                                                                                        AND amigoencomun = '".$amiguitosdos."' ";
 			    
-		 	                                                        $queryexistenciacomundos = mysql_query($consultaexistenciacomundos);  	
-			                                                        $rowexistenciacomundos = mysql_num_rows($queryexistenciacomundos);
+		 	                                                        $queryexistenciacomundos = $conexion->query($consultaexistenciacomundos);  	
+			                                                        $rowexistenciacomundos = $queryexistenciacomundos->rowCount();
 			                                                         if(!$rowexistenciacomundos > 0 )
 			                                                         {
 			  	                                                           $insertamigocomuntres = " INSERT INTO amigoscomunes(usuario, amigo, amigoencomun ) 
 			  	                                                                                   VALUE('".$session."', '".$amiguitos."', '".$amiguitosdos."' ) ";
 			
 				      
-				                                                             $queryinsertcomuntres = mysql_query($insertamigocomuntres);
+				                                                             $queryinsertcomuntres = $conexion->query($insertamigocomuntres);
 																			 
 																			 $insertamigocomuntres = " INSERT INTO amigoscomunes(usuario, amigo, amigoencomun ) 
 			  	                                                                                   VALUE('".$amiguitos."', '".$session."', '".$amiguitosdos."' ) ";
 			
 				      
-				                                                             $queryinsertcomuntres = mysql_query($insertamigocomuntres);
+				                                                             $queryinsertcomuntres = $conexion->query($insertamigocomuntres);
 			
 				 
 			                                                         }	
@@ -565,11 +568,11 @@ public function comun($user,$data)
                                                                          FROM amigoscomunes
                                                                          WHERE usuario = '".$session."' AND amigo = '".$amiguitos."'  ";
 
-                                                                         $queryamigocomundos = mysql_query($consultaamigocomundos);
-                                                   $rowamigocomundos = mysql_num_rows($queryamigocomundos);
+                                                                         $queryamigocomundos = $conexion->query($consultaamigocomundos);
+                                                   $rowamigocomundos = $queryamigocomundos->rowCount();
                                                  if($rowamigocomundos > 0)
                                                  {
-  	                                               while($arrayamigoencomundos = mysql_fetch_array($queryamigocomundos))
+  	                                               while($arrayamigoencomundos = $queryamigocomundos->fetch(PDO::FETCH_LAZY))
 	                                                 {
 	 	 	                                            if( $arrayamigoencomundos['amigoencomun']== 0)
                                                         {
@@ -617,7 +620,7 @@ else{
 
 function menufriends($user,$data)
 {
-    global $session;
+    global $session, $conexion;
 ?>		   
        
 	      <?php
@@ -651,8 +654,8 @@ function menufriends($user,$data)
                                                FROM amigoscomunes
                                                WHERE usuario = '".$session."' AND amigo = '".$user."' ";
 
-                       $queryamigocomun = mysql_query($consultaamigocomun);
-                       $rowamigocomun = mysql_num_rows($queryamigocomun);
+                       $queryamigocomun = $conexion->query($consultaamigocomun);
+                       $rowamigocomun = $queryamigocomun->rowCount();
                       if($rowamigocomun > 0)
                       {
                 ?>
@@ -678,7 +681,7 @@ function menufriends($user,$data)
 function friendsmutual($user,$data)
 {
 	
-	global $session;
+	global $session, $conexion;
  ?> 
    <div id="continfo" >
    	           <div class="clearfix">
@@ -695,11 +698,11 @@ function friendsmutual($user,$data)
                          FROM amigoscomunes
                          WHERE usuario = '".$session."' AND amigo = '".$user."' ";
 
-  $queryamigocomun = mysql_query($consultaamigocomun);
-  $rowamigocomun = mysql_num_rows($queryamigocomun);
+  $queryamigocomun = $conexion->query($consultaamigocomun);
+  $rowamigocomun = $queryamigocomun->rowCount();
   if($rowamigocomun > 0)
   {
-  	 while($arrayamigoencomun = mysql_fetch_array($queryamigocomun))
+  	 while($arrayamigoencomun = $queryamigocomun->fetch(PDO::FETCH_LAZY))
 	  {
 	?>        
 		   <div class='contamigo' > 
@@ -711,9 +714,9 @@ function friendsmutual($user,$data)
 			                 $consultaft = " SELECT fotoperfil 
 			                                   FROM usuarios 
 			                                   WHERE id_usuario = ".$fmutual." ";
-	                          $queryft = mysql_query($consultaft);
+	                          $queryft = $conexion->query($consultaft);
 
-		                      $arrayft = mysql_fetch_object($queryft);
+		                      $arrayft = $queryft->fetch(PDO::FETCH_LAZY);
 	  	 	                  
 			                      if( !empty($arrayft->fotoperfil) )
 			                      {
@@ -726,11 +729,11 @@ function friendsmutual($user,$data)
 							  							  
   							 else
 	                              {
-		                               $consexo = "SELECT sexo , nombre
+		                               $consexo = "SELECT sexo, nombre
 	                                               FROM usuarios
 	                                               WHERE id_usuario  = ".$fmutual." ";
-	                                  $querysexo = mysql_query($consexo);
-	                                  $arraysexo = mysql_fetch_object($querysexo);
+	                                  $querysexo = $conexion->query($consexo);
+	                                  $arraysexo = $querysexo->fetch(PDO::FETCH_LAZY);
 	                                  
 	                                       $sex = $arraysexo->sexo;
 	
@@ -739,11 +742,11 @@ function friendsmutual($user,$data)
 	                                                 WHERE sexo = '".$sex."' 
 	            
 	                                            ";
-	                                       $queryfotosexo = mysql_query($confoto);
-	                                       $arrayftsex = mysql_fetch_object($queryfotosexo);
+	                                       $queryfotosexo = $conexion->query($confoto);
+	                                       $arrayftsex = $queryfotosexo->fetch(PDO::FETCH_LAZY);
                                        
 									   ?>        
-	                                         <img class="fotolistfriend" SRC=../<?php echo $arrayftsex->fotosex ?> width="100" height="100" >        
+	                                         <img class="fotolistfriend" SRC=../<?php echo $arrayftsex->fotosex ?> width="100" height="100" >       
 	                                   <?php
 									   	
 	                             
@@ -757,7 +760,7 @@ function friendsmutual($user,$data)
                 	<?php
 			
 	                            echo " - <a  href=\"profile.php?usuario=".$fmutual." \"> ".$arraysexo->nombre."  </a>  ";
-	        
+	                       
 	               ?>
 		   	                
 
@@ -787,17 +790,17 @@ function friendsmutual($user,$data)
   
 public static function conteocomun ($user, $data)
 {
-		global $session;
+		global $session, $conexion;
   if($user != $session )
  {
     $consultaamigocomun = " SELECT count(*) amigoencomun
                          FROM amigoscomunes
                          WHERE usuario = '".$session."' AND amigo = '".$user."' ";
 
-  $queryamigocomun = mysql_query($consultaamigocomun);
-  $rowamigocomun = mysql_num_rows($queryamigocomun);
+  $queryamigocomun = $conexion->query($consultaamigocomun);
+  $rowamigocomun = $queryamigocomun->rowCount();
   
-  	 while($arrayamigoencomun = mysql_fetch_array($queryamigocomun))
+  	 while($arrayamigoencomun = $queryamigocomun->fetch(PDO::FETCH_LAZY))
 	 {
 	 	 	        if( $arrayamigoencomun['amigoencomun']== 0)
                     {
@@ -805,8 +808,8 @@ public static function conteocomun ($user, $data)
                                               FROM amigos
                                               WHERE usuario = '".$user."' ";
 
-                           $querymisamigos= mysql_query($conmisamigos);
-                           $rowmisamigos = mysql_num_rows($querymisamigos);
+                           $querymisamigos= $conexion->query($conmisamigos);
+                           $rowmisamigos = $querymisamigos->rowCount();
                           if($rowmisamigos > 0)
                          {
 						      echo '<li class="mfci4" ><a href="profile.php?'.http_build_query($data).'&opt=friends ">AMIGOS </a></li>';
@@ -843,11 +846,11 @@ public static function conteocomun ($user, $data)
                          FROM amigos
                          WHERE usuario = '".$session."' ";
 
-                  $querymisamigos= mysql_query($conmisamigos);
-                  $rowmisamigos = mysql_num_rows($querymisamigos);
+                  $querymisamigos= $conexion->query($conmisamigos);
+                  $rowmisamigos = $querymisamigos->rowCount();
                   if($rowmisamigos > 0)
                   {
-  	                 while($arraymisamigos = mysql_fetch_array($querymisamigos))
+  	                 while($arraymisamigos = $querymisamigos->fetch(PDO::FETCH_LAZY))
 	                {
 	 	 	           if( $arraymisamigos['amigos']== 0)
                        {
@@ -873,7 +876,7 @@ public static function conteocomun ($user, $data)
 
 function conteocomunmensajeagregarcomoamigos($user)
 {    
-		        global $session;
+		        global $session, $conexion;
   if($user != $session )
  {
      ?>
@@ -890,8 +893,8 @@ function conteocomunmensajeagregarcomoamigos($user)
  $con = "SELECT amigoencomun
          FROM amigoscomunes
         WHERE usuario = '".$session."' AND amigo = '".$user."'  LIMIT 6"; 
-$query = mysql_query($con);
-while($array = mysql_fetch_array($query))
+$query = $conexion->query($con);
+while($array = $query->fetch(PDO::FETCH_LAZY))
 {
        $array['amigoencomun'];
 
@@ -899,9 +902,9 @@ while($array = mysql_fetch_array($query))
 						$consultaft = " SELECT fotoperfil 
 						                FROM usuarios 
 						                WHERE id_usuario = ".$array['amigoencomun']." ";
-	                    $queryft = mysql_query($consultaft);
+	                    $queryft = $conexion->query($consultaft);
 
-		                $arrayft = mysql_fetch_object($queryft);
+		                $arrayft =  $queryft->fetch(PDO::FETCH_LAZY);
 	  	 	
 			           if( !empty($arrayft->fotoperfil) )
 			           {
@@ -916,8 +919,8 @@ while($array = mysql_fetch_array($query))
 		                      $consexo = "SELECT sexo
 	                                      FROM usuarios
 	                                      WHERE id_usuario  = ".$array['amigoencomun']." ";
-	                          $querysexo = mysql_query($consexo);
-	                          $arraysexo = mysql_fetch_object($querysexo);
+	                          $querysexo = $conexion->query($consexo);
+	                          $arraysexo = $querysexo->fetch(PDO::FETCH_LAZY);
 	
 	                          $sex = $arraysexo->sexo;
 	
@@ -926,8 +929,8 @@ while($array = mysql_fetch_array($query))
 	                                      WHERE sexo = '".$sex."' 
 	            
 	                                    ";
-	                        $queryfotosexo = mysql_query($confoto);
-	                        $arrayftsex = mysql_fetch_object($queryfotosexo);
+	                        $queryfotosexo = $conexioin->query($confoto);
+	                        $arrayftsex = $queryfotosexo->fetch(PDO::FETCH_LAZY);
 	                   ?>
 	                          <img width="50" height="50" SRC=../<?php echo $arrayftsex->fotosex ?> >
                     
@@ -941,11 +944,11 @@ while($array = mysql_fetch_array($query))
                          FROM amigoscomunes
                          WHERE usuario = '".$session."' AND amigo = '".$user."'  ";
 
-  $queryamigocomun = mysql_query($consultaamigocomun);
-  $rowamigocomun = mysql_num_rows($queryamigocomun);
+  $queryamigocomun = $conexion->query($consultaamigocomun);
+  $rowamigocomun = $queryamigocomun->rowCount();
   if($rowamigocomun > 0)
   {
-  	 while($arrayamigoencomun = mysql_fetch_array($queryamigocomun))
+  	 while($arrayamigoencomun = $queryamigocomun->fetch(PDO::FETCH_LAZY))
 	 {
 	 	 	        if( $arrayamigoencomun['amigoencomun']== 0)
                     {
@@ -983,14 +986,14 @@ while($array = mysql_fetch_array($query))
 	
 	public static function agregarusuario($add)
 {
-	global $session;
-	     $query = mysql_query("SELECT id_usuario FROM usuarios WHERE id_usuario = ' " . $add . " '   ");
-          if(mysql_num_rows($query) > 0) 
+	global $session, $conexion;
+	     $query = $conexion->query("SELECT id_usuario FROM usuarios WHERE id_usuario = ' " . $add . " '   ");
+          if($query->rowCount() > 0) 
 		{
-           $_query = mysql_query("SELECT * FROM solicitudes WHERE emisor = ' " . $session . " ' AND receptor = ' " . $add . " '  ");
-           if(mysql_num_rows($_query) == 0) 
+           $_query = $conexion->query("SELECT * FROM solicitudes WHERE emisor = ' " . $session . " ' AND receptor = ' " . $add . " '  ");
+           if($_query->rowCount() == 0) 
 		    {
-              mysql_query("INSERT INTO solicitudes SET emisor = ' " . $session . " ' , receptor = ' " . $add .  " '   ");
+              $conexion->query("INSERT INTO solicitudes SET emisor = ' " . $session . " ' , receptor = ' " . $add .  " '   ");
 			  
 			  /***INSERCION TABLA NEWSFEED ****/
 			  
@@ -1003,7 +1006,7 @@ while($array = mysql_fetch_array($query))
 		
 			  $insertevento = "INSERT INTO newsfeed (evento,usuario,hora,fecha, recipient ) values('".$evento."', '".$session."', '".$hora."', '".$fecha."' ,'".$add."')";
 	
-				mysql_query($insertevento);
+				$conexion->query($insertevento);
 				
 			  }
 			  
@@ -1018,7 +1021,7 @@ while($array = mysql_fetch_array($query))
 	
 	public static function estadoamistad($user,$data)
 	{
-		global $session;
+		global $session, $conexion;
 		 
 	     
 		                                                       
@@ -1030,8 +1033,8 @@ while($array = mysql_fetch_array($query))
 	                                          FROM amigos 
 	                                          WHERE usuario = '".$user."' AND amigos = '".$session."' ";
 	   
-       	                    $amigo = mysql_query($consultaamigo);
-                             $rk = mysql_num_rows($amigo);
+       	                    $amigo = $conexion->query($consultaamigo);
+                             $rk = $amigo->rowCount();
                                    if($rk > 0)
                                    {
 		                               echo " <strong><span style='color:green; ' >AMIGO</span></strong> ";    	 
@@ -1044,8 +1047,8 @@ while($array = mysql_fetch_array($query))
 												   	$consultasolicitudamistad = " SELECT * 
                                                                              FROM solicitudes 
                                                                              WHERE emisor = '" .$session. "' AND receptor = '" .$user. "' ";
-                                                    $querysolicitudamistad = mysql_query($consultasolicitudamistad);
-                                                    $numrowssolicitudamistad = mysql_num_rows($querysolicitudamistad);
+                                                    $querysolicitudamistad = $conexion->query($consultasolicitudamistad);
+                                                    $numrowssolicitudamistad = $querysolicitudamistad->rowCount();
                               
                                                    if( $numrowssolicitudamistad > 0 ) 
 	                                                {
@@ -1103,7 +1106,7 @@ while($array = mysql_fetch_array($query))
 	
 	 public static function estadoamistadreplica($user,$data)
     {
-        global $session;
+        global $session, $conexion;
                                                       
          if($user != $session )
           {
@@ -1118,8 +1121,8 @@ while($array = mysql_fetch_array($query))
                                               FROM amigos 
                                               WHERE usuario = '".$user."' AND amigos = '".$session."' ";
        
-                            $amigo = mysql_query($consultaamigo);
-                             $rk = mysql_num_rows($amigo);
+                            $amigo = $conexion->query($consultaamigo);
+                             $rk = $amigo->rowCount();
                                    if($rk > 0)
                                    {
                                            //no tengo necesidad de decir que es AMIGO
@@ -1133,8 +1136,8 @@ while($array = mysql_fetch_array($query))
                                                     $consultasolicitudamistad = " SELECT * 
                                                                              FROM solicitudes 
                                                                              WHERE emisor = '" .$session. "' AND receptor = '" .$user. "' ";
-                                                    $querysolicitudamistad = mysql_query($consultasolicitudamistad);
-                                                    $numrowssolicitudamistad = mysql_num_rows($querysolicitudamistad);
+                                                    $querysolicitudamistad = $conexion->query($consultasolicitudamistad);
+                                                    $numrowssolicitudamistad = $querysolicitudamistad->rowCount();
                               
                                                    if( $numrowssolicitudamistad > 0 ) 
                                                     {
@@ -1206,7 +1209,7 @@ while($array = mysql_fetch_array($query))
 	 
   public static function menu($user,$add, $data)
 	{
-		global $session;
+		global $session, $conexion;
 		
 ?>		
 	      
@@ -1231,8 +1234,8 @@ while($array = mysql_fetch_array($query))
 		                                                  FROM usuarios 
 		                                                 WHERE id_usuario = '".$user."' ";	
 	
-	                                   $querynombreamigo = mysql_query($nombreamigo);
-	                                  $arraynombreamigo = mysql_fetch_array($querynombreamigo);
+	                                   $querynombreamigo = $conexion->query($nombreamigo);
+	                                  $arraynombreamigo = $querynombreamigo->fetch(PDO::FETCH_LAZY);
 	                                   
 	    		                             echo "<strong class='nombusuario'>".$arraynombreamigo['nombre']."</strong> ";        	 
 	    		                                                                                               

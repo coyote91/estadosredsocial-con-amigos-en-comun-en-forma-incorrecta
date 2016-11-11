@@ -19,11 +19,11 @@ $consulta = "SELECT id_usuario, nivel
              FROM  usuarios 
              WHERE nombre = '" . $_POST["nombre"] . "' AND clave = '" . $_POST["clave"] . "'";
 
-$query = mysql_query($consulta);
+$query = $conexion->query($consulta);
     
-    if(mysql_num_rows($query) > 0) 
+    if($query->rowCount() > 0) 
 	{
-        $arraylogin = mysql_fetch_object($query);
+        $arraylogin = $query->fetch(PDO::FETCH_LAZY);
 	
       	$_SESSION['logged'] = $arraylogin->id_usuario; 
 		

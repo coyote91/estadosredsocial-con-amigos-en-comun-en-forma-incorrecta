@@ -7,27 +7,13 @@
 * @since Version 1.0
 */
 
-$localhost = "localhost";
-$usuario = "root";
-$clave = "";
-$db ="logincorrecto";
-
-$conexion = mysql_connect($localhost, $usuario, $clave);
-$db = mysql_select_db($db);
+$opciones = array(
+    PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+); 
+		$conexion = new PDO('mysql:host=localhost;dbname=logincorrecto', 'root','',$opciones );
+	$conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT); 				
 
 
-if(!$conexion)
-{
-	
-	echo "Hay un problema con la conexion ";
-}
-
-
-if(!$db)
-{
-	echo "Hay un error con la base de datos";
-	
-}
 
 
 

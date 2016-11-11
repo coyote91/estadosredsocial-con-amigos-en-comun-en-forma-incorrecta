@@ -18,17 +18,17 @@ class Elusuario
    public static function avatar()
 {
 
-	 global $idusuario;
+	 global $idusuario, $conexion;
 	
 	$consultanombre = "SELECT nombre
 	                   FROM usuarios
 	                   WHERE id_usuario = '".$idusuario."'";
 	
-	$query = mysql_query($consultanombre);
-	$row = mysql_num_rows($query);
+	$query = $conexion->query($consultanombre);
+	$row = $query->rowCount();
 	if($row > 0 )
 	{
-		while($array = mysql_fetch_object($query))
+		while($array = $query->fetch(PDO::FETCH_LAZY))
 		{
 			 echo '<a href="javascript:void(0)" onclick="mostrar();"; class="nameavatar">';
 			 echo $array->nombre.'</a>';

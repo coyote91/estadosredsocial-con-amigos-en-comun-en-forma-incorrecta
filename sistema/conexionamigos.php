@@ -130,7 +130,7 @@ function ventanamodal ()
 function contarsolicitud()
 {
 	
-	global $session;
+	global $session, $conexion;
 	
 	$consulta = " SELECT count(*) emisor
                   FROM solicitudes
@@ -138,13 +138,13 @@ function contarsolicitud()
 	            
 	            ";
 	
-	$query = mysql_query($consulta);
-	$row = mysql_num_rows($query);
+	$query = $conexion->query($consulta);
+	$row = $query->rowCount();
 
     if($row > 0)
 	{
 		
-		while($fila = mysql_fetch_object($query))
+		while($fila = $query->fetch(PDO::FETCH_LAZY))
 		{
 			if($fila->emisor == 0)
             {
@@ -169,7 +169,7 @@ function contarsolicitud()
 
 function solicitudenviadas ()
 {
-   global $session;
+   global $session, $conexion;
 	
 	$solicitudenviada = " SELECT count(*) receptor
                   FROM solicitudes
@@ -177,13 +177,13 @@ function solicitudenviadas ()
 	            
 	            ";
 	
-	$querysolicitudenviada = mysql_query($solicitudenviada);
-	$rowsolicitudenviada = mysql_num_rows($querysolicitudenviada);
+	$querysolicitudenviada = $conexion->query($solicitudenviada);
+	$rowsolicitudenviada = $querysolicitudenviada->rowCount();
 
     if($rowsolicitudenviada > 0)
 	{
 		
-		while($filasolicitudenviada = mysql_fetch_object($querysolicitudenviada))
+		while($filasolicitudenviada = $querysolicitudenviada->fetch(PDO::FETCH_LAZY))
 		{
 			if($filasolicitudenviada->receptor == 0)
             {
@@ -472,14 +472,14 @@ function listarmiembros ()
 
 public static function agregarusuario($add)
 {
-	global $session;
-	     $query = mysql_query("SELECT id_usuario FROM usuarios WHERE id_usuario = ' " . $add . " '   ");
-          if(mysql_num_rows($query) > 0) 
+	global $session, $conexion;
+	     $query = $conexion->query("SELECT id_usuario FROM usuarios WHERE id_usuario = ' " . $add . " '   ");
+          if($query->rowCount() > 0) 
 		{
-           $_query = mysql_query("SELECT * FROM solicitudes WHERE emisor = ' " . $session . " ' AND receptor = ' " . $add . " '  ");
-           if(mysql_num_rows($_query) == 0) 
+           $_query = $conexion->query("SELECT * FROM solicitudes WHERE emisor = ' " . $session . " ' AND receptor = ' " . $add . " '  ");
+           if($_query->rowCount() == 0) 
 		    {
-              mysql_query("INSERT INTO solicitudes SET emisor = ' " . $session . " ' , receptor = ' " . $add .  " '   ");
+              $conexion->query("INSERT INTO solicitudes SET emisor = ' " . $session . " ' , receptor = ' " . $add .  " '   ");
 			  
 			  /***INSERCION TABLA NEWSFEED ****/
 			  
@@ -492,7 +492,7 @@ public static function agregarusuario($add)
 		
 			  $insertevento = "INSERT INTO newsfeed (evento,usuario,hora,fecha, recipient ) values('".$evento."', '".$session."', '".$hora."', '".$fecha."' ,'".$add."')";
 	
-				mysql_query($insertevento);
+				$conexion->query($insertevento);
 				
 			  }
 			  
@@ -507,21 +507,21 @@ public static function agregarusuario($add)
 function contaramigos ()
 {
 	
-	global $session;
+	global $session, $conexion;
 	
 	$consultaconteo = "SELECT count(*) amigos 
 	                   FROM amigos
 	                   WHERE usuario = '".$session."' ";
 	
-	$queryconteoamigos = mysql_query($consultaconteo);
+	$queryconteoamigos = $conexion->query($consultaconteo);
   
-    $rowconteo = mysql_num_rows($queryconteoamigos);
+    $rowconteo = $queryconteoamigos->rowCount();
 	
 	if($rowconteo > 0 ) 
 	{
 		
 		  
-		while ($filasconteoamigos = mysql_fetch_object($queryconteoamigos))
+		while ($filasconteoamigos = $queryconteoamigos->fetch(PDO::FETCH_LAZY))
 		{  
 		       if($filasconteoamigos->amigos == 0 )      
 			    {
