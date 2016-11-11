@@ -1,0 +1,372 @@
+/**** clearfix ********/
+
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+    }
+.clearfix { display: inline-table; }
+/* Hides from IE-mac \*/
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+
+
+/***end clearfix ******/
+
+/*********** contenedor del profile************/
+
+#contglobalprofile
+{
+	
+	width:890px;
+	min-height:300px;
+	height:auto;
+	background-color:;
+	position:relative;
+	margin:0px auto;
+}
+
+.contsuperior
+{
+    
+    width:auto;
+    height:auto;
+    position:relative;
+    margin-bottom:17px;
+    /*border:2px solid black;*/
+    
+}
+.continferior{
+    width:auto;
+    min-height:400px;
+    height:auto;
+    position:relative;
+    margin-bottom:35px;
+     /*border:2px solid green;*/
+    
+}
+
+.continfgeneral
+{
+    width:auto;
+    min-height:400px;
+    height:auto;
+    /*background-color:pink;*/
+    position:relative;
+    margin:0px 0px 17px 0px;
+    border: 1px solid #ccc;
+    
+    
+}
+/********* end contenedor del profile**********/
+
+
+/*******************COVER-IMAGE**************/
+
+
+.cajacontenidotimeline
+{
+	
+	border:1px solid #ccc;
+	width:100%;
+	min-height:290px;
+	height:auto;
+	position:relative;
+	margin:0 auto 17px auto;
+		
+}	
+	
+#coverimagen
+{
+width:850px;
+height:202px;
+position:relative;
+margin: 0 auto;
+background-color:orange;
+
+}
+
+ 
+#cajaglobalcoversinimagen
+{
+position:relative;
+width:851px;
+min-height:160px;
+height:auto;
+ 
+background-color:rgb(213, 214, 217);
+border-bottom-color:rgba(0,0,0,0.4);
+}
+ 
+.coversinimagen
+{
+background:url("../imagenes/background-cover.png") repeat-x left bottom scroll transparent;
+}
+ 
+ 
+ 
+#cajaglobalfootercoverinformacion
+{
+width:649px;
+min-height:41px;
+height:43px;
+position:relative;
+top:160px;
+padding-left:201px;
+background-color:#FFFFFF;
+z-index:4;
+display:block;
+clear:right;
+}
+ 
+/*****END-COVER-IMAGE**********/
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+/*******CAJA-FOTO-PERFIL***********/
+ 
+#cajafotoperfil
+{
+width:170px;
+height:170px;
+padding:1px;
+background: none repeat scroll 0% 0% rgba (0, 0, 0 , 0.3);
+position:relative;
+z-index:14;
+margin:-143px 0px 0px 0px;
+border-radius:3px;
+-moz-border-radius:3px;
+-webkit-border-radius:3px;
+}
+ 
+ .fotoperfil  
+ {
+ 	 margin:2px 0px 0px 2px;
+ 	 position:relative;
+ 	 z-index:15;
+ 	 border:4px solid #fff;
+ 	 border-radius:2px;
+ 	 -webkit-border-radius:2px;
+ 	 -moz-border-radius:2px;
+ 	background-color:#FFF;
+ 	width:160px;
+ 	height:160px;*/
+ 
+ }
+ 
+/*********END-CAJA-FOTO-PERFIL*******/
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+/*********MENU-FOOTER-COVER-IMAGEN********/
+ 
+ #contmenufooter
+ {
+ 	width:100%;
+ 	height:49px;
+ 	position:absolute;
+ 	bottom:-45px;
+ 	left:-1px;
+ 	border:1px solid #ccc;
+ 	z-index:-9999999;
+ }
+#menufootercoverimagen > li
+{
+float:left;
+list-style-type:none;
+font-size:13px;
+font-weight:bold;
+line-height:3.3;
+padding:0px 0px;
+position:relative;
+vertical-align:middle;
+white-space:nowrap;
+ margin: 0px 0px 0px 20px;
+}
+ 
+a{
+	
+	   text-decoration:none;	
+	
+}
+
+.mfci0
+{
+background-color:;  	
+}
+
+ 
+.mfci1
+{
+/*border-right: 1px solid rgb(233,234,237);*/ 
+width:auto;
+height:49px;
+background-color:;
+/*border-left: 1px solid rgb(233,234,237);*/
+text-align:center	
+}
+ 
+ 
+ 
+.mfci2
+{width:auto;
+height:49px;
+background-color:;
+/*border-left: 1px solid rgb(233,234,237);*/
+}
+ 
+ 
+.mfci3
+{
+width:auto;
+height:49px;
+/*border-left: 1px solid rgb(233,234,237);*/ 
+}
+ 
+ 
+.mfci4
+{width:auto;
+height:49px;
+background-color:;
+ /*border-left:1px solid rgb(233,234,237);*/
+ /*border-right:1px solid rgb(233,234,237);*/
+padding-right:7px;
+text-align:center;
+}
+ 
+.mfci5
+{
+background-color:;
+width:42px;
+}
+ 
+ 
+ 
+.imagenpestaña
+{
+width:9px;
+height:5px;
+background-color:;
+position:absolute;
+margin-left:6px;
+top:20px;
+background-image:url("../imagenes/pestañas.png");
+background-position:-121px -108px;
+ 
+}
+ 
+/*******END-MENU-FOOTER-COVER-IMAGEN******/
+
+
+.nombusuario{
+		position:relative;
+		margin:0px 7px 0px 12px;
+		max-width:100px;
+		max-height:35px;
+		float:left;
+	}
+	
+.msgsolicitudenviada{
+	
+  	position:relative;
+    margin:0px 0px 0px 12px;
+	float:left;	
+	
+}
+ 
+
+
+#contmensaje
+{
+  width:890px;	
+  height:80px;
+  position:relative;
+  margin:0px 0px 0px 0px;
+  border:1px solid #ccc;
+  background-color:;
+ 
+
+}
+
+#contmensaje ul li 
+{
+    list-style-type:none;
+}
+
+/*
+#continfo{
+		
+		width:100%;
+		min-height:400px;
+		height:auto;
+		border:1px solid #CCCCCC;
+	    position:relative;
+	    margin:120px 0px 0px 0px;
+	}
+*/	
+.msgcount
+{
+	
+	
+	
+}
+
+.menufotos{
+	width:100%;
+
+
+	background-color:skyblue;
+}
+
+.menufotos > li 
+{
+	
+ 	margin-right:4px;
+	float:left;
+	list-style-type:none;
+}
+
+.mfila1{
+	
+	width:100%;
+
+	background-color:orange;
+}
+.menufriends{
+	width:100%;
+	height:35px;
+	
+}
+.menufriends > li
+{
+	 float:left;
+  	 list-style-type:none;
+	 margin-right:10px;
+	
+}
+
+
+.contamigo
+    {
+    	width:402px; 
+    	height:105px; 
+    	overflow:hidden; 
+    	margin: 0px 13px 13px 13px;  
+    	border:1px solid #E9EAED; 
+    	float:left;
+    	padding:0px 10px 0px 0px;
+    	
+    }
+    

@@ -1,0 +1,24 @@
+
+Articulo 1 
+
+http://carlos.faxterol.com/2010/10/la-historia-hash-bag-del-que-tanto-intriga-en-las-redes-sociales/
+
+Articulo 2
+
+http://www.hispamedios.com/articles/id34-url-y-uri
+
+Articulo 3 
+
+http://alfonsomarin.com/desarrollo-web/tutoriales/backbonejs-v-routers
+
+
+
+en el foro alguien con el mismo problema de no perder la primer variable pasada por url
+
+http://www.php-hispano.net/foro/9945/conservar-variable-get
+
+
+
+interesante en este foro hablan algo importante del mismo tema importante no olvidar pasarle el parametro $query_string, ya que si no, se pierden los parametros pasados por url.
+
+http://desarrolla2.com/post/mi-fichero-de-configuracion-de-nginx-compatible-con-imaginebundle
